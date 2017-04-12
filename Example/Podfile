@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'OLNetwork_Example' do
+  pod 'OLNetwork', :path => '../'
+
+  target 'OLNetwork_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+  end
+end
