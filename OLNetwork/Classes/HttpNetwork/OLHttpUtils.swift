@@ -11,7 +11,7 @@ import Foundation
 class OLHttpUtils: NSObject {
     
     //MARK: - 状态码验证
-    class func ol_statusCodeValidator(statusCode: Int) -> Bool {
+    internal class func ol_statusCodeValidator(statusCode: Int) -> Bool {
         if statusCode >= 200 && statusCode <= 299 {
             return true
         }else {
@@ -21,7 +21,7 @@ class OLHttpUtils: NSObject {
     
     //MARK: Download
     //获取沙盒Temp目录下未完成的下载任务的文件夹路径
-    class func incompleteDownloadTemCacheFolder() -> String? {
+    internal class func incompleteDownloadTemCacheFolder() -> String? {
         let fileManager: FileManager = FileManager.default
         var cacheFolder: String?
         if cacheFolder == nil {
@@ -38,7 +38,7 @@ class OLHttpUtils: NSObject {
     }
     
     //获取沙盒Temp目录下未完成的下载任务的URL
-    class func incompletedDownloadTempPathForDownloadPath(downloadPath: String) -> URL? {
+    internal class func incompletedDownloadTempPathForDownloadPath(downloadPath: String) -> URL? {
     
         var tempPath: String?
         let incompleteCacheFolder = OLHttpUtils.incompleteDownloadTemCacheFolder()
@@ -50,7 +50,7 @@ class OLHttpUtils: NSObject {
     }
     
     //判断NSData数据是否失效
-    class func validateResumeData(data: Data?) -> Bool {
+    internal class func validateResumeData(data: Data?) -> Bool {
         //From YTKNetwork
         if data == nil || data!.count < 1 {
             return false

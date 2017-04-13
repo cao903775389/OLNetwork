@@ -9,7 +9,7 @@
 import Foundation
 
 //请求回调代理
-@objc protocol OLHttpRequestDelegate {
+@objc public protocol OLHttpRequestDelegate {
     
     //请求完成
     @objc optional

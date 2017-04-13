@@ -9,9 +9,9 @@
 import UIKit
 
 //MServerURL
-class BeautyMServerHttpRequest: OLHttpRequest {
+public class BeautyMServerHttpRequest: OLHttpRequest {
 
-    override func ol_requestCustomArgument(requestArgument: [String : AnyObject]?) -> [String : AnyObject]? {
+    override public func ol_requestCustomArgument(requestArgument: [String : AnyObject]?) -> [String : AnyObject]? {
         
         var newParams = [String: AnyObject]()
         if requestArgument != nil {
@@ -43,7 +43,7 @@ class BeautyMServerHttpRequest: OLHttpRequest {
         }
     }
     
-    override func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : AnyObject]?) -> [String : AnyObject]? {
+    override public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : AnyObject]?) -> [String : AnyObject]? {
         
         var header = [String: AnyObject]()
         if headerfileds != nil {
@@ -56,7 +56,7 @@ class BeautyMServerHttpRequest: OLHttpRequest {
         return header
     }
     
-    override func ol_requestCustomJSONValidator() -> Bool {
+    override public func ol_requestCustomJSONValidator() -> Bool {
         
         //校验JSON 格式信息
         /*

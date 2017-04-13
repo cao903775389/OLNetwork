@@ -7,7 +7,7 @@
 //
 
 import UIKit
-@objc protocol OLHttpBatchRequestDelegate {
+@objc public protocol OLHttpBatchRequestDelegate {
     
     //请求发送成功
     @objc optional
@@ -23,19 +23,19 @@ import UIKit
  *  @note 请求之间没有依赖关系 在任何一个请求失败时都会中断请求的继续 通过回调告诉业务类操作失败的请求
  */
 
-class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
+public class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
     
     //所有请求
-    var requestArray: [OLHttpRequest]!
+    private var requestArray: [OLHttpRequest]!
     
     //delegate
-    weak var delegate: OLHttpBatchRequestDelegate?
+    public weak var delegate: OLHttpBatchRequestDelegate?
     
     //请求标识tag
-    var tag: Int?
+    private var tag: Int?
     
     //失败的请求
-    var failedRequest: OLHttpRequest?
+    private var failedRequest: OLHttpRequest?
     
     //完成数
     private var finishedCount: Int!
@@ -45,16 +45,16 @@ class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
     }
     
     //MARK: - init
-    required convenience init(requestArray: [OLHttpRequest]) {
+    required convenience public init(requestArray: [OLHttpRequest]) {
         self.init()
         self.requestArray = requestArray
         self.finishedCount = 0
     }
     
     //MARK: - Public
-    func start() {
+    public func start() {
         if finishedCount > 0 {
-            ("Error: 请求已经开始! 无法再次开启")
+            print("Error: 请求已经开始! 无法再次开启")
             return
         }
         failedRequest = nil
@@ -65,21 +65,21 @@ class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
         }
     }
     
-    func stop() {
+    public func stop() {
         self.delegate = nil
         self.clearRequest()
         OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(request: self)
     }
     
     //MARK: - Private
-    func clearRequest() {
+    public func clearRequest() {
         for req in requestArray {
             req.cancleDelegateAndRequest()
         }
     }
     
     //MARK: - OLHttpRequestDelegate
-    func ol_requestFinished(request: OLHttpRequest) {
+    public func ol_requestFinished(request: OLHttpRequest) {
         finishedCount = finishedCount + 1
         //请求完成
         if finishedCount == requestArray.count {
@@ -89,7 +89,7 @@ class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
         }
     }
     
-    func ol_requestFailed(request: OLHttpRequest) {
+    public func ol_requestFailed(request: OLHttpRequest) {
         failedRequest = request
         self.clearRequest()
         self.delegate?.ol_batchRequestFailed?(request: self)

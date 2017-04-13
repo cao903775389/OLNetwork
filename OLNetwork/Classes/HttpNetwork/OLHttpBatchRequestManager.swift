@@ -28,12 +28,12 @@ class OLHttpBatchRequestManager: NSObject {
     
     //MARK: - Public
     //添加请求
-    func addBatchRequest(request: OLHttpBatchRequest) {
+    public func addBatchRequest(request: OLHttpBatchRequest) {
         requestArray.append(request)
     }
     
     //移除请求
-    func removeBatchRequest(request: OLHttpBatchRequest) {
+    internal func removeBatchRequest(request: OLHttpBatchRequest) {
         let index = requestArray.index(of: request)
         if index != nil && index! < requestArray.count {
             requestArray.remove(at: index!)

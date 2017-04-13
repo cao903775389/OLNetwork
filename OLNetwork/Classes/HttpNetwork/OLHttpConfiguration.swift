@@ -8,13 +8,13 @@
 
 import UIKit
 //请求服务器地址
-enum OLHttpRequestMode {
+public enum OLHttpRequestMode {
     case Release//正式环境
     case Debug//测试环境
 }
 
 //请求的基础配置类
-class OLHttpConfiguration: NSObject {
+public class OLHttpConfiguration: NSObject {
 
     /**
      * !@brief 单例方法
@@ -23,13 +23,13 @@ class OLHttpConfiguration: NSObject {
     internal static let sharedOLHttpConfiguration: OLHttpConfiguration = OLHttpConfiguration()
     
     //用户id
-    var userId: String?
+    public var userId: String?
     
     //是否url开启打印开关
-    var debugLogEnabled: Bool!
+    public var debugLogEnabled: Bool!
     
     //是否是DEBUG模式
-    var requestMode: OLHttpRequestMode!
+    public var requestMode: OLHttpRequestMode!
     
     //MARK: Private
     private override init() {

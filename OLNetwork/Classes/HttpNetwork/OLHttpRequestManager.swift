@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import YYModel
 //网络连接池
-class OLHttpRequestManager: NSObject {
+public class OLHttpRequestManager: NSObject {
 
     /**
      * !@brief 单例方法
@@ -43,22 +43,22 @@ class OLHttpRequestManager: NSObject {
     
     //MARK: - 发送请求
     //发起普通请求
-    func sendHttpRequest(request: OLHttpRequest) {
+    public func sendHttpRequest(request: OLHttpRequest) {
         self.sendHttpRequest(request: request, uploadProgressBlock: nil, downloadProgressBlock: nil)
     }
     
     //发起带有上传进度回调的请求
-    func sendHttpRequest(request: OLHttpRequest, uploadProgressBlock: @escaping ((Progress) -> Void)) {
+    public func sendHttpRequest(request: OLHttpRequest, uploadProgressBlock: @escaping ((Progress) -> Void)) {
         self.sendHttpRequest(request: request, uploadProgressBlock: uploadProgressBlock, downloadProgressBlock: nil)
     }
     
     //发起带有下载进度回调的请求
-    func sendHttpRequest(request: OLHttpRequest, downloadProgressBlock: ((Progress) -> Void)?) {
+    public func sendHttpRequest(request: OLHttpRequest, downloadProgressBlock: ((Progress) -> Void)?) {
         self.sendHttpRequest(request: request, uploadProgressBlock: nil, downloadProgressBlock: downloadProgressBlock)
     }
     
     //取消某个请求
-    func cancleHttpRequest(request: OLHttpRequest?) {
+    public func cancleHttpRequest(request: OLHttpRequest?) {
         
         guard request?.requestTask != nil else { return }
         if self.requestRecord[NSNumber(integerLiteral: request!.requestTask!.taskIdentifier)] != nil {
@@ -71,7 +71,7 @@ class OLHttpRequestManager: NSObject {
     }
     
     //取消所有请求
-    func cancleAllHttpRequests() {
+    public func cancleAllHttpRequests() {
         let allKeys = self.requestRecord.keys
         if allKeys.count > 0 {
             let copiedKeys = allKeys
@@ -199,9 +199,9 @@ class OLHttpRequestManager: NSObject {
         }
         var dataTask: URLSessionDataTask?
         
-        dataTask = manager.dataTask(with: request as! URLRequest, uploadProgress: uploadProgress, downloadProgress: nil) { (response, responseObject, error) in
+        dataTask = manager.dataTask(with: request! as URLRequest, uploadProgress: uploadProgress, downloadProgress: nil) { (response, responseObject, error) in
             
-            self.handleRequestResult(task: dataTask!, responseObject: responseObject as? AnyObject, error: error as? NSError)
+            self.handleRequestResult(task: dataTask!, responseObject: responseObject as AnyObject, error: error as NSError?)
         }
         
         return dataTask!
@@ -252,14 +252,14 @@ class OLHttpRequestManager: NSObject {
                 return URL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
             }, completionHandler: { (response, filePathURL, error) in
                 
-                self.handleRequestResult(task: downloadTask!, responseObject: filePathURL as? AnyObject, error: error as? NSError)
+                self.handleRequestResult(task: downloadTask!, responseObject: filePathURL as AnyObject, error: error as NSError?)
             })
             
         }else {
             downloadTask = manager.downloadTask(with: request as URLRequest, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> URL in
                 return URL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
             }, completionHandler: { (response, filePathURL, error) in
-                self.handleRequestResult(task: downloadTask!, responseObject: filePathURL as? AnyObject, error: error as? NSError)
+                self.handleRequestResult(task: downloadTask!, responseObject: filePathURL as AnyObject, error: error as NSError?)
             })
         }
         return downloadTask!
@@ -331,7 +331,7 @@ class OLHttpRequestManager: NSObject {
             request?.responseObject = self.jsonResponseSerializer.responseObject(for: task.response, data: request!.responseObject as? Data, error: &serializationError) as AnyObject
             break
         case .XML:
-            request?.responseObject = self.xmlResponseSerializer.responseObject(for: task.response, data: request!.responseObject as! Data, error: &serializationError) as AnyObject
+            request?.responseObject = self.xmlResponseSerializer.responseObject(for: task.response, data: request!.responseObject as? Data, error: &serializationError) as AnyObject
             break
         }
         
@@ -371,7 +371,7 @@ class OLHttpRequestManager: NSObject {
     
     private func requestDidSucceedWithRequest(request: OLHttpRequest) {
         
-        print("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(request.requestArgument)\n========返回JSON: \n\(request.responseObject!.yy_modelToJSONString())\n========错误码: \(request.errorCode)\n========URLResponseStatusCode状态码: \(request.statusCode)\n========")
+        print("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(String(describing: request.requestArgument))\n========返回JSON: \n\(String(describing: request.responseObject!.yy_modelToJSONString()))\n========错误码: \(String(describing: request.errorCode))\n========URLResponseStatusCode状态码: \(String(describing: request.statusCode))\n========")
         request.delegate?.ol_requestFinished?(request: request)
     }
 }

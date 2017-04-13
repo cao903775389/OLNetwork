@@ -8,13 +8,13 @@
 
 import Foundation
 //签名key
-let SignKey = "4eA59fEF705f449e-"
+internal let SignKey = "4eA59fEF705f449e-"
 
 //加密key
-let Md5Key  = "j6mR(b+IF)#6z-La"
+internal let Md5Key  = "j6mR(b+IF)#6z-La"
 
 //M_API地址
-enum MAPIURL: String {
+public enum MAPIURL: String {
     case V100 = "https://app.onlylady.com/mapi/beauty/v100/"
     case V110 = "https://app.onlylady.com/mapi/beauty/v110/"
     case V130 = "https://app.onlylady.com/mapi/beauty/v130/"
@@ -22,10 +22,10 @@ enum MAPIURL: String {
 }
 
 //M_Server
-let MServerURL: String = "https://app.onlylady.com/mserver/index.php"
+public let MServerURL: String = "https://app.onlylady.com/mserver/index.php"
 
 //请求号
-enum OLCode: Int {
+public enum OLCode: Int {
     
     /**
      * !@brief App 启动相关

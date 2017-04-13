@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension UIDevice {
+public extension UIDevice {
     
     //获取设备名称
     var modelName: String {

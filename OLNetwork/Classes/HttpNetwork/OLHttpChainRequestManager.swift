@@ -14,9 +14,9 @@ import UIKit
  *  @note 在上一个请求完成后执行下一个 依添加顺序执行
  */
 
-class OLHttpChainRequestManager: NSObject {
+public class OLHttpChainRequestManager: NSObject {
 
-    static let sharedOLHttpChainRequestManager: OLHttpChainRequestManager = OLHttpChainRequestManager()
+    public static let sharedOLHttpChainRequestManager: OLHttpChainRequestManager = OLHttpChainRequestManager()
 
     //请求数组
     private var requestArray: [OLHttpChainRequest]!
@@ -28,11 +28,11 @@ class OLHttpChainRequestManager: NSObject {
     }
     
     //MARK: - Public
-    func addChainRequest(request: OLHttpChainRequest) {
+    public func addChainRequest(request: OLHttpChainRequest) {
         requestArray.append(request)
     }
     
-    func removeChainRequest(request: OLHttpChainRequest) {
+    internal func removeChainRequest(request: OLHttpChainRequest) {
         let index = requestArray.index(of: request)
         if index != nil && index! < requestArray.count {
             requestArray.remove(at: index!)

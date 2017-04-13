@@ -10,11 +10,11 @@
 import Foundation
 
 //本地下载未完成文件夹名称
-let OLHttpNetworkIncompleteDownloadFolderName: String = "Incomplete"
+internal let OLHttpNetworkIncompleteDownloadFolderName: String = "Incomplete"
 
 //错误信息 errormsg
-let OL_ServerError = "服务器数据异常"
-let OL_NetworkError = "网络请求异常"
-let OL_NetworkErrorTimedOut = "网络不给力, 请稍候再试"
-let OL_NetworkErrorNotConnectedToInternet = "当前网络不可用，请检查你的网络设置"
+internal let OL_ServerError = "服务器数据异常"
+internal let OL_NetworkError = "网络请求异常"
+internal let OL_NetworkErrorTimedOut = "网络不给力, 请稍候再试"
+internal let OL_NetworkErrorNotConnectedToInternet = "当前网络不可用，请检查你的网络设置"
 

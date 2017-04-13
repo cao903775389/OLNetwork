@@ -22,16 +22,16 @@ import UIKit
 //请求回调
 typealias OLHttpChainCallBack = @convention(block) (OLHttpChainRequest, OLHttpRequest) -> Void
 
-class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
+public class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
 
     //delegate
     weak var delegate: OLHttpChainRequestDelegate?
     
     //所有请求数组
-    var requestArray: [OLHttpRequest]!
+    private var requestArray: [OLHttpRequest]!
     
     //所有请求回调
-    var requestCallBackArray: [OLHttpChainCallBack]!
+    private var requestCallBackArray: [OLHttpChainCallBack]!
     
     //下一个请求的索引
     private var nextRequestIndex: Int!
@@ -69,7 +69,7 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
             return
         }
         if requestArray.count > 0 {
-            self.startNextRequest()
+            _ = self.startNextRequest()
             OLHttpChainRequestManager.sharedOLHttpChainRequestManager.addChainRequest(request: self)
         }else {
             print("Error: 请求数组为空!!")
@@ -115,7 +115,7 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
     }
     
     //MARK: - OLHttpRequestDelegate
-    func ol_requestFinished(request: OLHttpRequest) {
+    public func ol_requestFinished(request: OLHttpRequest) {
         let currentRequestIndex = nextRequestIndex - 1
         let callBack = requestCallBackArray[currentRequestIndex]
         callBack(self, request)
@@ -126,7 +126,7 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
         }
     }
     
-    func ol_requestFailed(request: OLHttpRequest) {
+    public func ol_requestFailed(request: OLHttpRequest) {
         self.delegate?.ol_chainRequestFailed?(request: self, failedRequest: request)
         OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(request: self)
     }
