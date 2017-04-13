@@ -12,7 +12,6 @@ class TestTableViewCell: UITableViewCell {
 
     @IBOutlet weak var coverImgView: UIImageView!
     
-    @IBOutlet weak var title: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

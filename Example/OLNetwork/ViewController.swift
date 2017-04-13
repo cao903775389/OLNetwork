@@ -9,8 +9,7 @@
 import UIKit
 
 import OLNetwork
-import AFNetworking
-import SnapKit
+import AFNetworking.UIImageView_AFNetworking
 import YYModel
 
 private let identifier = "identifier"
@@ -25,8 +24,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.estimatedRowHeight = 200
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = 150
         self.tableView.register(UINib(nibName: "TestTableViewCell", bundle: nil), forCellReuseIdentifier: identifier)
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -50,7 +48,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         let model = self.data[indexPath.row]
         (cell as! TestTableViewCell).imageView?.setImageWith(URL(string: model.iu!)!)
-        (cell as! TestTableViewCell).title.text = model.tt
         return cell!
     }
     
@@ -67,7 +64,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     self.data.append(trialModel!)
                 }
             }
-            
             
             self.tableView.reloadData()
         }

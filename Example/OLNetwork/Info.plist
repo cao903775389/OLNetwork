@@ -35,9 +35,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
-	<key>App Transport SecuritySettings</key>
+	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>Allow Arbitray Loads</key>
+		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
 </dict>

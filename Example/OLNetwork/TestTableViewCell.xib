@@ -18,31 +18,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="318" height="251"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTn-L4-mlj">
-                        <rect key="frame" x="0.0" y="0.0" width="318" height="150"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="150" id="X9I-W9-7en"/>
-                        </constraints>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JTn-L4-mlj">
+                        <rect key="frame" x="0.0" y="0.0" width="318" height="250.5"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiT-nP-nYw">
-                        <rect key="frame" x="20" y="219.5" width="278" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="EiT-nP-nYw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="8N7-IW-njr"/>
-                    <constraint firstAttribute="trailing" secondItem="EiT-nP-nYw" secondAttribute="trailing" constant="20" id="MvX-Vt-06r"/>
+                    <constraint firstAttribute="bottom" secondItem="JTn-L4-mlj" secondAttribute="bottom" id="NFM-X2-Jac"/>
                     <constraint firstAttribute="trailing" secondItem="JTn-L4-mlj" secondAttribute="trailing" id="Xa7-vV-Wln"/>
                     <constraint firstItem="JTn-L4-mlj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ggG-bF-K1S"/>
                     <constraint firstItem="JTn-L4-mlj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="lhA-px-JN0"/>
-                    <constraint firstAttribute="bottom" secondItem="EiT-nP-nYw" secondAttribute="bottom" constant="10" id="oNb-aV-gqH"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="coverImgView" destination="JTn-L4-mlj" id="VLO-jH-bym"/>
-                <outlet property="title" destination="EiT-nP-nYw" id="nVf-nA-25Q"/>
             </connections>
             <point key="canvasLocation" x="47" y="157.5"/>
         </tableViewCell>
