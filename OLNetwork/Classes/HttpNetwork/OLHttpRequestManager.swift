@@ -16,7 +16,7 @@ public class OLHttpRequestManager: NSObject {
      * !@brief 单例方法
      *  @note 网络连接池
      */
-    static let sharedOLHttpRequestManager: OLHttpRequestManager = OLHttpRequestManager()
+    public static let sharedOLHttpRequestManager: OLHttpRequestManager = OLHttpRequestManager()
     
     //AFHTTPSessionManager
     private var manager: AFHTTPSessionManager!
