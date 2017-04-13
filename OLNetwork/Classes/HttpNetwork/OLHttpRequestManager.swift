@@ -7,8 +7,8 @@
 //
 
 import UIKit
-
 import AFNetworking
+import YYModel
 //网络连接池
 class OLHttpRequestManager: NSObject {
 
@@ -198,9 +198,12 @@ class OLHttpRequestManager: NSObject {
             request = requestSerializer.request(withMethod: method, urlString: URLString, parameters: parameters, error: error)
         }
         var dataTask: URLSessionDataTask?
-        dataTask = manager.dataTaskWithRequest(request! as URLRequest, uploadProgress: uploadProgress, downloadProgress: nil) { (_, responseObject, error) in
-            self.handleRequestResult(task: dataTask!, responseObject: responseObject, error: error)
+        
+        dataTask = manager.dataTask(with: request as! URLRequest, uploadProgress: uploadProgress, downloadProgress: nil) { (response, responseObject, error) in
+            
+            self.handleRequestResult(task: dataTask!, responseObject: responseObject as? AnyObject, error: error as? NSError)
         }
+        
         return dataTask!
     }
     
@@ -230,11 +233,11 @@ class OLHttpRequestManager: NSObject {
         }
         //判断本地是否有已下载的原始数据
         var resumeDataFileExists: Bool = false
-        var data: NSData?
+        var data: Data?
         let filePath = OLHttpUtils.incompletedDownloadTempPathForDownloadPath(downloadPath: downloadPath)
         if filePath != nil {
-            resumeDataFileExists = FileManager.default.fileExists(atPath: filePath!.path!)
-            data = NSData(contentsOfURL: filePath! as URL)
+            resumeDataFileExists = FileManager.default.fileExists(atPath: filePath!.path)
+            try? data = Data(contentsOf: filePath!)
         }
 
         //判断已下载原始数据是否失效
@@ -245,19 +248,18 @@ class OLHttpRequestManager: NSObject {
         
         var downloadTask: URLSessionDownloadTask?
         if canBeResumed {
-            
-            downloadTask = manager.downloadTaskWithResumeData(data! as Data, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> NSURL in
-                  return NSURL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
+            downloadTask = manager.downloadTask(withResumeData: data!, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> URL in
+                return URL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
+            }, completionHandler: { (response, filePathURL, error) in
                 
-                }, completionHandler: { (response, filePathURL, error) in
-                  self.handleRequestResult(downloadTask!, responseObject: filePathURL as AnyObject?, error: error)
+                self.handleRequestResult(task: downloadTask!, responseObject: filePathURL as? AnyObject, error: error as? NSError)
             })
+            
         }else {
-            downloadTask = manager.downloadTaskWithRequest(request as URLRequest, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> NSURL in
-                return NSURL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
-                
-                }, completionHandler: { (response, filePathURL, error) in
-                    self.handleRequestResult(downloadTask!, responseObject: filePathURL as AnyObject?, error: error)
+            downloadTask = manager.downloadTask(with: request as URLRequest, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> URL in
+                return URL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
+            }, completionHandler: { (response, filePathURL, error) in
+                self.handleRequestResult(task: downloadTask!, responseObject: filePathURL as? AnyObject, error: error as? NSError)
             })
         }
         return downloadTask!

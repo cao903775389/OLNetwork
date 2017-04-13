@@ -38,7 +38,7 @@ class OLHttpUtils: NSObject {
     }
     
     //获取沙盒Temp目录下未完成的下载任务的URL
-    class func incompletedDownloadTempPathForDownloadPath(downloadPath: String) -> NSURL? {
+    class func incompletedDownloadTempPathForDownloadPath(downloadPath: String) -> URL? {
     
         var tempPath: String?
         let incompleteCacheFolder = OLHttpUtils.incompleteDownloadTemCacheFolder()
@@ -46,13 +46,13 @@ class OLHttpUtils: NSObject {
         guard tempPath != nil else {
             return nil
         }
-        return NSURL(fileURLWithPath: tempPath!)
+        return URL(fileURLWithPath: tempPath!)
     }
     
     //判断NSData数据是否失效
-    class func validateResumeData(data: NSData?) -> Bool {
+    class func validateResumeData(data: Data?) -> Bool {
         //From YTKNetwork
-        if data == nil || data!.length < 1 {
+        if data == nil || data!.count < 1 {
             return false
         }
         //解析本地缓存数据

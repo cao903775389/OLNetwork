@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 //请求服务器地址
 enum OLHttpRequestMode {
     case Release//正式环境
@@ -37,5 +36,6 @@ class OLHttpConfiguration: NSObject {
         super.init()
         self.debugLogEnabled = true
         self.requestMode = OLHttpRequestMode.Debug
+        
     }
 }

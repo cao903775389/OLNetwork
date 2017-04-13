@@ -29,7 +29,7 @@ class BeautyMAPIHttpRequest: OLHttpRequest {
             header = headerfileds!
         }
         header["OLENV"] = OLHttpUtils.ol_buildOLEnv() as AnyObject
-        if OLHttpConfiguration.sharedOLHttpConfiguration.requestMode == enumOnlineMode.DevMode {
+        if OLHttpConfiguration.sharedOLHttpConfiguration.requestMode == OLHttpRequestMode.Debug {
             header["TESTENV"] = "1" as AnyObject
         }
         return header

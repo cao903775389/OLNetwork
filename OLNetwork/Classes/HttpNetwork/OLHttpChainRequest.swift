@@ -65,14 +65,14 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
     //MARK: - Public
     func start() {
         if nextRequestIndex > 0 {
-            log.info("Error: 依赖请求已经开启! 无法再次开启!!")
+            print("Error: 依赖请求已经开启! 无法再次开启!!")
             return
         }
         if requestArray.count > 0 {
             self.startNextRequest()
             OLHttpChainRequestManager.sharedOLHttpChainRequestManager.addChainRequest(request: self)
         }else {
-            log.info("Error: 请求数组为空!!")
+            print("Error: 请求数组为空!!")
         }
     }
     

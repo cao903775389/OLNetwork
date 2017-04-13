@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 @objc protocol OLHttpBatchRequestDelegate {
     
     //请求发送成功
@@ -55,7 +54,7 @@ class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
     //MARK: - Public
     func start() {
         if finishedCount > 0 {
-            print("Error: 请求已经开始! 无法再次开启")
+            ("Error: 请求已经开始! 无法再次开启")
             return
         }
         failedRequest = nil
