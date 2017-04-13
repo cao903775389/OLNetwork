@@ -172,12 +172,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "OLNetwork_Example" */;
 			buildPhases = (
-				D7CC537BAA829DB781C6BD2F /* [CP] Check Pods Manifest.lock */,
+				1A5A8E357D08FEB522B1B9CC /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				35C2EB2A423D0E6363C4FBA9 /* [CP] Embed Pods Frameworks */,
-				569E94F317BD12E31682C80E /* [CP] Copy Pods Resources */,
+				FB500B198C878DEABD7E5BBB /* [CP] Embed Pods Frameworks */,
+				A6D3FFCD3EBF3B734619F712 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -271,19 +271,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		35C2EB2A423D0E6363C4FBA9 /* [CP] Embed Pods Frameworks */ = {
+		1A5A8E357D08FEB522B1B9CC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OLNetwork_Example/Pods-OLNetwork_Example-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		49D8F20C5EF0950BB737C733 /* [CP] Embed Pods Frameworks */ = {
@@ -301,21 +301,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OLNetwork_Tests/Pods-OLNetwork_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		569E94F317BD12E31682C80E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OLNetwork_Example/Pods-OLNetwork_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9C79D6D5020C112739DDD285 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -331,19 +316,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OLNetwork_Tests/Pods-OLNetwork_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D7CC537BAA829DB781C6BD2F /* [CP] Check Pods Manifest.lock */ = {
+		A6D3FFCD3EBF3B734619F712 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OLNetwork_Example/Pods-OLNetwork_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E57727B60A0749CE80E126EF /* [CP] Check Pods Manifest.lock */ = {
@@ -359,6 +344,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FB500B198C878DEABD7E5BBB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OLNetwork_Example/Pods-OLNetwork_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

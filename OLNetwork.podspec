@@ -41,4 +41,5 @@ s.platform = :ios, '8.0'
     s.dependency 'AFNetworking', '~> 3.1.0'
     s.dependency 'NSString+TBEncryption', '~> 1.0'
     s.dependency 'YYModel', '~> 1.0.4'
+    s.dependency 'SDWebImage', '~> 4.0.0'
 end

@@ -9,9 +9,8 @@
 import UIKit
 
 import OLNetwork
-import AFNetworking.UIImageView_AFNetworking
 import YYModel
-
+import SDWebImage
 private let identifier = "identifier"
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, OLHttpRequestDelegate {
@@ -47,7 +46,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell = TestTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: identifier)
         }
         let model = self.data[indexPath.row]
-        (cell as! TestTableViewCell).imageView?.setImageWith(URL(string: model.iu!)!)
+        (cell as! TestTableViewCell).imageView?.sd_setImage(with: URL(string: model.iu!)!)
         return cell!
     }
     
