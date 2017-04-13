@@ -21,7 +21,7 @@ class BeautyMServerHttpRequest: OLHttpRequest {
         var header = ["_Sign": OLHttpUtils.ol_deviceIDFA(), "_ExtMsg": ""]
         
         header["olts"] = "\(NSDate().timeIntervalSince1970)"
-        header["olsign"] = OLHttpUtils.ol_buildSign(newParams.map({$1}))
+        header["olsign"] = OLHttpUtils.ol_buildSign(params: newParams.map({$1}))
         
         header["OLENV"] = OLHttpUtils.ol_buildOLEnv()
         header["USERENV"] = OLHttpUtils.ol_buildUserEnv()
@@ -29,14 +29,15 @@ class BeautyMServerHttpRequest: OLHttpRequest {
         newParams["_Header"] = header as AnyObject
         
         //加密参数
-        let data = try? NSJSONSerialization.dataWithJSONObject(newParams, options: NSJSONWritingOptions.init(rawValue: 0))
+        let data = try? JSONSerialization.data(withJSONObject: newParams, options: JSONSerialization.WritingOptions.init(rawValue: 0))
         if data != nil {
             
-            let result = String(data: data!, encoding: NSUTF8StringEncoding)
+            let result = String(data: data!, encoding: String.Encoding.utf8)
             //先MD5加密
-            let md5Str = (result! + Md5Key).md5
+            let md5Str = ((result! + Md5Key) as NSString).tb_MD5()
+            let sha1Str = (md5Str! as NSString).tb_SHA1()
             //然后sha1加密
-            return ["r": result!.base64 as AnyObject, "s": md5Str!.sha1 as AnyObject]
+            return ["r": (result! as NSString).tb_base64() as AnyObject, "s": sha1Str as AnyObject]
         }else {
             return nil
         }
@@ -49,7 +50,7 @@ class BeautyMServerHttpRequest: OLHttpRequest {
             header = headerfileds!
         }
         header["OLENV"] = OLHttpUtils.ol_buildOLEnv() as AnyObject
-        if OLHttpConfiguration.sharedOLHttpConfiguration.requestMode == enumOnlineMode.DevMode {
+        if OLHttpConfiguration.sharedOLHttpConfiguration.requestMode == OLHttpRequestMode.Debug {
             header["TESTENV"] = "2" as AnyObject
         }
         return header
@@ -84,7 +85,7 @@ class BeautyMServerHttpRequest: OLHttpRequest {
             if let status = responseJSON["_Status"] as? NSDictionary {
                 let errorCode = status["_Code"]
                 if let error = errorCode as? NSNumber {
-                    self.errorCode = error.integerValue
+                    self.errorCode = error.intValue
                     
                 }else if let error = errorCode as? String {
                     self.errorCode = Int(error)

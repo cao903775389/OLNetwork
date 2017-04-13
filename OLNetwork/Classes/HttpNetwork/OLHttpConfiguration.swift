@@ -23,16 +23,19 @@ class OLHttpConfiguration: NSObject {
      */
     internal static let sharedOLHttpConfiguration: OLHttpConfiguration = OLHttpConfiguration()
     
+    //用户id
+    var userId: String?
+    
     //是否url开启打印开关
     var debugLogEnabled: Bool!
     
     //是否是DEBUG模式
-    var requestMode: enumOnlineMode!
+    var requestMode: OLHttpRequestMode!
     
     //MARK: Private
     private override init() {
         super.init()
         self.debugLogEnabled = true
-        self.requestMode = enumOnlineMode.DevMode
+        self.requestMode = OLHttpRequestMode.Debug
     }
 }

@@ -34,9 +34,9 @@ class OLHttpBatchRequestManager: NSObject {
     
     //移除请求
     func removeBatchRequest(request: OLHttpBatchRequest) {
-        let index = requestArray.indexOf(request)
-        if index != nil && index < requestArray.count {
-            requestArray.removeAtIndex(index!)
+        let index = requestArray.index(of: request)
+        if index != nil && index! < requestArray.count {
+            requestArray.remove(at: index!)
         }
     }
 }

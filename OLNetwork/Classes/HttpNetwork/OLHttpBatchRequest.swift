@@ -11,11 +11,11 @@ import UIKit
 @objc protocol OLHttpBatchRequestDelegate {
     
     //请求发送成功
-    optional
+    @objc optional
     func ol_batchRequestFinished(request: OLHttpBatchRequest)
     
     //请求发送失败
-    optional
+    @objc optional
     func ol_batchRequestFailed(request: OLHttpBatchRequest)
 }
 
@@ -55,21 +55,21 @@ class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
     //MARK: - Public
     func start() {
         if finishedCount > 0 {
-            log.info("Error: 请求已经开始! 无法再次开启")
+            print("Error: 请求已经开始! 无法再次开启")
             return
         }
         failedRequest = nil
-        OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.addBatchRequest(self)
+        OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.addBatchRequest(request: self)
         for req in requestArray {
             req.delegate = self
-            OLHttpRequestManager.sharedOLHttpRequestManager.sendHttpRequest(req)
+            OLHttpRequestManager.sharedOLHttpRequestManager.sendHttpRequest(request: req)
         }
     }
     
     func stop() {
         self.delegate = nil
         self.clearRequest()
-        OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(self)
+        OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(request: self)
     }
     
     //MARK: - Private
@@ -84,16 +84,16 @@ class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
         finishedCount = finishedCount + 1
         //请求完成
         if finishedCount == requestArray.count {
-            self.delegate?.ol_batchRequestFinished?(self)
-            OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(self)
-            log.info("\(self): 请求完成!")
+            self.delegate?.ol_batchRequestFinished?(request: self)
+            OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(request: self)
+            print("\(self): 请求完成!")
         }
     }
     
     func ol_requestFailed(request: OLHttpRequest) {
         failedRequest = request
         self.clearRequest()
-        self.delegate?.ol_batchRequestFailed?(self)
-        OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(self)
+        self.delegate?.ol_batchRequestFailed?(request: self)
+        OLHttpBatchRequestManager.sharedOLHttpBatchRequestManager.removeBatchRequest(request: self)
     }
 }

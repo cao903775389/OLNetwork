@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 //签名key
 let SignKey = "4eA59fEF705f449e-"
 

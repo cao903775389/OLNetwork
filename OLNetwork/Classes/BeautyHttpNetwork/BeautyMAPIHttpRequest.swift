@@ -18,7 +18,7 @@ class BeautyMAPIHttpRequest: OLHttpRequest {
             newParams = requestArgument!
         }
         newParams["olts"] = "\(NSDate().timeIntervalSince1970)" as AnyObject
-        newParams["olsign"] = OLHttpUtils.ol_buildSign(newParams.map({$1})) as AnyObject
+        newParams["olsign"] = OLHttpUtils.ol_buildSign(params: newParams.map({$1})) as AnyObject
         return newParams
     }
     
@@ -49,7 +49,7 @@ class BeautyMAPIHttpRequest: OLHttpRequest {
         if let responseJSON = self.responseObject as? NSDictionary{
             let errorCode = responseJSON["errcode"]
             if let error = errorCode as? NSNumber {
-                self.errorCode = error.integerValue
+                self.errorCode = error.intValue
                 
             }else if let error = errorCode as? String {
                 self.errorCode = Int(error)

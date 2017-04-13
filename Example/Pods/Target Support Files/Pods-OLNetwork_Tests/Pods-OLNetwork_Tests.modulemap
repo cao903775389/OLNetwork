@@ -1,0 +1,6 @@
+framework module Pods_OLNetwork_Tests {
+  umbrella header "Pods-OLNetwork_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

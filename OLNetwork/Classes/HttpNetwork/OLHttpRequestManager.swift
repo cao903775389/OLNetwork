@@ -8,6 +8,7 @@
 
 import UIKit
 
+import AFNetworking
 //网络连接池
 class OLHttpRequestManager: NSObject {
 
@@ -43,17 +44,17 @@ class OLHttpRequestManager: NSObject {
     //MARK: - 发送请求
     //发起普通请求
     func sendHttpRequest(request: OLHttpRequest) {
-        self.sendHttpRequest(request, uploadProgressBlock: nil, downloadProgressBlock: nil)
+        self.sendHttpRequest(request: request, uploadProgressBlock: nil, downloadProgressBlock: nil)
     }
     
     //发起带有上传进度回调的请求
-    func sendHttpRequest(request: OLHttpRequest, uploadProgressBlock: ((NSProgress) -> Void)) {
-        self.sendHttpRequest(request, uploadProgressBlock: uploadProgressBlock, downloadProgressBlock: nil)
+    func sendHttpRequest(request: OLHttpRequest, uploadProgressBlock: @escaping ((Progress) -> Void)) {
+        self.sendHttpRequest(request: request, uploadProgressBlock: uploadProgressBlock, downloadProgressBlock: nil)
     }
     
     //发起带有下载进度回调的请求
-    func sendHttpRequest(request: OLHttpRequest, downloadProgressBlock: ((NSProgress) -> Void)?) {
-        self.sendHttpRequest(request, uploadProgressBlock: nil, downloadProgressBlock: downloadProgressBlock)
+    func sendHttpRequest(request: OLHttpRequest, downloadProgressBlock: ((Progress) -> Void)?) {
+        self.sendHttpRequest(request: request, uploadProgressBlock: nil, downloadProgressBlock: downloadProgressBlock)
     }
     
     //取消某个请求
@@ -61,10 +62,10 @@ class OLHttpRequestManager: NSObject {
         
         guard request?.requestTask != nil else { return }
         if self.requestRecord[NSNumber(integerLiteral: request!.requestTask!.taskIdentifier)] != nil {
-            if request!.requestTask?.state == NSURLSessionTaskState.Running {
-                log.info("========请求已取消: \(request!.requestCode)========")
+            if request!.requestTask?.state == URLSessionTask.State.running {
+                print("========请求已取消: \(request!.requestCode)========")
                 request!.requestTask?.cancel()
-                self.removeRequestFromPool(request!)
+                self.removeRequestFromPool(request: request!)
             }
         }
     }
@@ -101,13 +102,13 @@ class OLHttpRequestManager: NSObject {
     
     //移除请求出缓存池
     private func removeRequestFromPool(request: OLHttpRequest) {
-        self.requestRecord.removeValueForKey(NSNumber(integerLiteral: request.requestTask!.taskIdentifier))
+        self.requestRecord.removeValue(forKey: NSNumber(integerLiteral: request.requestTask!.taskIdentifier))
     }
     
     //请求状态码校验
     private func ol_validateResult(request: OLHttpRequest) -> (Bool, NSError?) {
         
-        var result = OLHttpUtils.ol_statusCodeValidator(request.statusCode!)
+        var result = OLHttpUtils.ol_statusCodeValidator(statusCode: request.statusCode!)
         if !result {
             return (result, NSError(domain: OLHttpRequestValidationErrorDomain, code: OLHttpRequestValidationError.InvalidStatusCode.rawValue, userInfo: [NSLocalizedDescriptionKey: OL_NetworkError]))
         }
@@ -136,38 +137,38 @@ class OLHttpRequestManager: NSObject {
     }
     
     //MARK: 请求发起相关
-    private func sendHttpRequest(request: OLHttpRequest, uploadProgressBlock: ((NSProgress) -> Void)?, downloadProgressBlock: ((NSProgress) -> Void)?) {
+    private func sendHttpRequest(request: OLHttpRequest, uploadProgressBlock: ((Progress) -> Void)?, downloadProgressBlock: ((Progress) -> Void)?) {
         
         var requestSerializationError: NSError?
-        request.requestTask = self.sessionTaskForRequest(request, uploadProgressBlock: uploadProgressBlock, downloadProgressBlock: downloadProgressBlock ,error: &requestSerializationError)
+        request.requestTask = self.sessionTaskForRequest(request: request, uploadProgressBlock: uploadProgressBlock, downloadProgressBlock: downloadProgressBlock ,error: &requestSerializationError)
         if requestSerializationError != nil {
             //请求失败
             return
         }
         
-        log.info("\n========\n========开始请求: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(request.requestArgument)\n========")
+        print("\n========\n========开始请求: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(String(describing: request.requestArgument))\n========")
         //添加请求到缓存池
-        self.addRequestToPool(request)
+        self.addRequestToPool(request: request)
         request.requestTask?.resume()
     }
     
     //创建URLSessionTask会话
-    private func sessionTaskForRequest(request: OLHttpRequest, uploadProgressBlock: ((NSProgress) -> Void)?, downloadProgressBlock: ((NSProgress) -> Void)?, error: NSErrorPointer) -> NSURLSessionTask {
+    private func sessionTaskForRequest(request: OLHttpRequest, uploadProgressBlock: ((Progress) -> Void)?, downloadProgressBlock: ((Progress) -> Void)?, error: NSErrorPointer) -> URLSessionTask {
         
         let url = request.requestUrl!
         let method = request.requestMethod!
-        let requestSerializer = self.requestSerializerForRequest(request)
+        let requestSerializer = self.requestSerializerForRequest(request: request)
         let param = request.requestArgument
         
         switch method {
             case .GET:
-                return self.dataTaskWithHTTPMethod("GET", requestSerializer: requestSerializer, URLString: url, parameters: param, error: error)
+                return self.dataTaskWithHTTPMethod(method: "GET", requestSerializer: requestSerializer, URLString: url, parameters: param, error: error)
             case .POST:
-                return self.dataTaskWithHTTPMethod("POST", requestSerializer: requestSerializer, URLString: url, parameters: param, error: error)
+                return self.dataTaskWithHTTPMethod(method: "POST", requestSerializer: requestSerializer, URLString: url, parameters: param, error: error)
             case .UPLOAD:
-                return self.dataTaskWithHTTPMethod("POST", requestSerializer: requestSerializer, URLString: url, parameters: param, constructingBodyBlock: request.constructingBlock, uploadProgress: uploadProgressBlock, error: error)
+                return self.dataTaskWithHTTPMethod(method: "POST", requestSerializer: requestSerializer, URLString: url, parameters: param, constructingBodyBlock: request.constructingBlock, uploadProgress: uploadProgressBlock, error: error)
             case .DOWNLOAD:
-                return self.downloadTaskWithDownloadPath(request.resumableDownloadPath!, requestSerializer: requestSerializer, URLString: url, parameters: param, downloadProgressBlock: downloadProgressBlock, error: error)
+                return self.downloadTaskWithDownloadPath(downloadPath: request.resumableDownloadPath!, requestSerializer: requestSerializer, URLString: url, parameters: param, downloadProgressBlock: downloadProgressBlock, error: error)
         }
     }
     
@@ -177,9 +178,9 @@ class OLHttpRequestManager: NSObject {
                                         requestSerializer: AFHTTPRequestSerializer,
                                         URLString: String,
                                         parameters: [String: AnyObject]?,
-                                        error: NSErrorPointer) -> NSURLSessionDataTask {
+                                        error: NSErrorPointer) -> URLSessionDataTask {
         
-        return self.dataTaskWithHTTPMethod(method, requestSerializer: requestSerializer, URLString: URLString, parameters: parameters, constructingBodyBlock: nil, uploadProgress: nil, error: error)
+        return self.dataTaskWithHTTPMethod(method: method, requestSerializer: requestSerializer, URLString: URLString, parameters: parameters, constructingBodyBlock: nil, uploadProgress: nil, error: error)
     }
     
     //NSURLSessionUploadTask 上传请求
@@ -188,17 +189,17 @@ class OLHttpRequestManager: NSObject {
                                         URLString: String,
                                         parameters: [String: AnyObject]?,
                                         constructingBodyBlock: ((AFMultipartFormData) -> Void)?,
-                                        uploadProgress: ((NSProgress) -> Void)?,
-                                        error: NSErrorPointer) -> NSURLSessionDataTask {
+                                        uploadProgress: ((Progress) -> Void)?,
+                                        error: NSErrorPointer) -> URLSessionDataTask {
         var request: NSURLRequest?
         if constructingBodyBlock != nil {
-            request = requestSerializer.multipartFormRequestWithMethod(method, URLString: URLString, parameters: parameters, constructingBodyWithBlock: constructingBodyBlock, error: error)
+            request = requestSerializer.multipartFormRequest(withMethod: method, urlString: URLString, parameters: parameters, constructingBodyWith: constructingBodyBlock, error: error)
         }else {
-            request = requestSerializer.requestWithMethod(method, URLString: URLString, parameters: parameters, error: error)
+            request = requestSerializer.request(withMethod: method, urlString: URLString, parameters: parameters, error: error)
         }
-        var dataTask: NSURLSessionDataTask?
-        dataTask = manager.dataTaskWithRequest(request!, uploadProgress: uploadProgress, downloadProgress: nil) { (_, responseObject, error) in
-            self.handleRequestResult(dataTask!, responseObject: responseObject, error: error)
+        var dataTask: URLSessionDataTask?
+        dataTask = manager.dataTaskWithRequest(request! as URLRequest, uploadProgress: uploadProgress, downloadProgress: nil) { (_, responseObject, error) in
+            self.handleRequestResult(task: dataTask!, responseObject: responseObject, error: error)
         }
         return dataTask!
     }
@@ -208,13 +209,13 @@ class OLHttpRequestManager: NSObject {
                                               requestSerializer: AFHTTPRequestSerializer,
                                               URLString: String,
                                               parameters: [String: AnyObject]?,
-                                              downloadProgressBlock: ((NSProgress) -> Void)?,
-                                              error: NSErrorPointer) -> NSURLSessionDownloadTask {
+                                              downloadProgressBlock: ((Progress) -> Void)?,
+                                              error: NSErrorPointer) -> URLSessionDownloadTask {
         
         var downloadTargetPath: String?
-        let request = requestSerializer.requestWithMethod("GET", URLString: URLString, parameters: parameters, error: error)
+        let request = requestSerializer.request(withMethod: "GET", urlString: URLString, parameters: parameters, error: error)
         var isDirectory: ObjCBool = false
-        if NSFileManager.defaultManager().fileExistsAtPath(downloadPath, isDirectory: &isDirectory) == false {
+        if FileManager.default.fileExists(atPath: downloadPath, isDirectory: &isDirectory) == false {
             isDirectory = false
         }
         
@@ -222,37 +223,37 @@ class OLHttpRequestManager: NSObject {
         //确保下载的目标路径是一个文件 而不是一个文件夹
         if isDirectory.boolValue == true {
             
-            let fileName = request.URL!.lastPathComponent! as String
-            downloadTargetPath = NSString.pathWithComponents([downloadPath, fileName]) as String
+            let fileName = request.url!.lastPathComponent as String
+            downloadTargetPath = NSString.path(withComponents: [downloadPath, fileName]) as String
         }else {
             downloadTargetPath = downloadPath
         }
         //判断本地是否有已下载的原始数据
         var resumeDataFileExists: Bool = false
         var data: NSData?
-        let filePath = OLHttpUtils.incompletedDownloadTempPathForDownloadPath(downloadPath)
+        let filePath = OLHttpUtils.incompletedDownloadTempPathForDownloadPath(downloadPath: downloadPath)
         if filePath != nil {
-            resumeDataFileExists = NSFileManager.defaultManager().fileExistsAtPath(filePath!.path!)
-            data = NSData(contentsOfURL: filePath!)
+            resumeDataFileExists = FileManager.default.fileExists(atPath: filePath!.path!)
+            data = NSData(contentsOfURL: filePath! as URL)
         }
 
         //判断已下载原始数据是否失效
-        let resumeDataIsValid = OLHttpUtils.validateResumeData(data)
+        let resumeDataIsValid = OLHttpUtils.validateResumeData(data: data)
         
         //判断此下载任务是否可以被重新唤起
         let canBeResumed: Bool = resumeDataFileExists && resumeDataIsValid
         
-        var downloadTask: NSURLSessionDownloadTask?
+        var downloadTask: URLSessionDownloadTask?
         if canBeResumed {
             
-            downloadTask = manager.downloadTaskWithResumeData(data!, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> NSURL in
+            downloadTask = manager.downloadTaskWithResumeData(data! as Data, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> NSURL in
                   return NSURL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
                 
                 }, completionHandler: { (response, filePathURL, error) in
                   self.handleRequestResult(downloadTask!, responseObject: filePathURL as AnyObject?, error: error)
             })
         }else {
-            downloadTask = manager.downloadTaskWithRequest(request, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> NSURL in
+            downloadTask = manager.downloadTaskWithRequest(request as URLRequest, progress: downloadProgressBlock, destination: { (targetPathURL, response) -> NSURL in
                 return NSURL(fileURLWithPath: downloadTargetPath!, isDirectory: false)
                 
                 }, completionHandler: { (response, filePathURL, error) in
@@ -291,7 +292,7 @@ class OLHttpRequestManager: NSObject {
     }
     
     //处理请求回调
-    private func handleRequestResult(task: NSURLSessionTask, responseObject: AnyObject?, error: NSError?) {
+    private func handleRequestResult(task: URLSessionTask, responseObject: AnyObject?, error: NSError?) {
         
         let request = requestRecord[NSNumber(integerLiteral: task.taskIdentifier)]
         if request == nil {
@@ -300,15 +301,15 @@ class OLHttpRequestManager: NSObject {
 
         request!.responseObject = responseObject
         if error != nil {
-            let responseError = self.handleResponseErrorCode(error!.code)
-            self.requestDidFailWithRequest(request!, error: responseError)
-            self.removeRequestFromPool(request!)
+            let responseError = self.handleResponseErrorCode(errorCode: error!.code)
+            self.requestDidFailWithRequest(request: request!, error: responseError)
+            self.removeRequestFromPool(request: request!)
             return
         }
         
         if request?.responseObject == nil {
-            self.requestDidFailWithRequest(request!, error: NSError(domain: OLHttpRequestValidationErrorDomain, code: OLHttpRequestValidationError.InvalidJSONFormat.rawValue, userInfo: [NSLocalizedDescriptionKey: OL_ServerError]))
-            self.removeRequestFromPool(request!)
+            self.requestDidFailWithRequest(request: request!, error: NSError(domain: OLHttpRequestValidationErrorDomain, code: OLHttpRequestValidationError.InvalidJSONFormat.rawValue, userInfo: [NSLocalizedDescriptionKey: OL_ServerError]))
+            self.removeRequestFromPool(request: request!)
             return
         }
         //请求错误信息
@@ -325,10 +326,10 @@ class OLHttpRequestManager: NSObject {
             break
         case .JSON:
             
-            request?.responseObject = self.jsonResponseSerializer.responseObjectForResponse(task.response, data: request!.responseObject as? NSData, error: &serializationError) as AnyObject?
+            request?.responseObject = self.jsonResponseSerializer.responseObject(for: task.response, data: request!.responseObject as? Data, error: &serializationError) as AnyObject
             break
         case .XML:
-            request?.responseObject = self.xmlResponseSerializer.responseObjectForResponse(task.response, data: request!.responseObject as? NSData, error: &serializationError) as AnyObject?
+            request?.responseObject = self.xmlResponseSerializer.responseObject(for: task.response, data: request!.responseObject as! Data, error: &serializationError) as AnyObject
             break
         }
         
@@ -336,17 +337,17 @@ class OLHttpRequestManager: NSObject {
             succees = false
             requestError = NSError(domain: OLHttpRequestValidationErrorDomain, code: OLHttpRequestValidationError.InvalidJSONFormat.rawValue, userInfo: [NSLocalizedDescriptionKey: OL_ServerError])
         }else {
-            let validateResult = self.ol_validateResult(request!)
+            let validateResult = self.ol_validateResult(request: request!)
             succees = validateResult.0
             requestError = validateResult.1
         }
         
         if succees {
-            self.requestDidSucceedWithRequest(request!)
+            self.requestDidSucceedWithRequest(request: request!)
         } else {
-            self.requestDidFailWithRequest(request!, error: requestError!)
+            self.requestDidFailWithRequest(request: request!, error: requestError!)
         }
-        self.removeRequestFromPool(request!)
+        self.removeRequestFromPool(request: request!)
     }
     
     //MARK: - 请求回调
@@ -354,21 +355,21 @@ class OLHttpRequestManager: NSObject {
         
         request.errorCode = error.code
         request.errorMsg = error.userInfo[NSLocalizedDescriptionKey] as? String
-        log.info("\n========\n========请求失败: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(request.requestArgument)\n========错误信息: \(request.errorMsg)\n========错误码: \(request.errorCode)\n========URLResponseStatusCode状态码: \(request.statusCode)\n========")
+        print("\n========\n========请求失败: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(String(describing: request.requestArgument))\n========错误信息: \(String(describing: request.errorMsg))\n========错误码: \(String(describing: request.errorCode))\n========URLResponseStatusCode状态码: \(String(describing: request.statusCode))\n========")
         
         let incompleteDownloadData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData
         if incompleteDownloadData != nil && request.resumableDownloadPath != nil {
-            let path = OLHttpUtils.incompletedDownloadTempPathForDownloadPath(request.resumableDownloadPath!)
+            let path = OLHttpUtils.incompletedDownloadTempPathForDownloadPath(downloadPath: request.resumableDownloadPath!)
             if path != nil {
-                incompleteDownloadData?.writeToURL(path!, atomically: true)
+                incompleteDownloadData?.write(to: path! as URL, atomically: true)
             }
         }
-        request.delegate?.ol_requestFailed?(request)
+        request.delegate?.ol_requestFailed?(request: request)
     }
     
     private func requestDidSucceedWithRequest(request: OLHttpRequest) {
         
-        log.info("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(request.requestArgument)\n========返回JSON: \n\(request.responseObject!.yy_modelToJSONString())\n========错误码: \(request.errorCode)\n========URLResponseStatusCode状态码: \(request.statusCode)\n========")
-        request.delegate?.ol_requestFinished?(request)
+        print("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(request.requestArgument)\n========返回JSON: \n\(request.responseObject!.yy_modelToJSONString())\n========错误码: \(request.errorCode)\n========URLResponseStatusCode状态码: \(request.statusCode)\n========")
+        request.delegate?.ol_requestFinished?(request: request)
     }
 }

@@ -1,0 +1,6 @@
+framework module NSString_TBEncryption {
+  umbrella header "NSString+TBEncryption-umbrella.h"
+
+  export *
+  module * { export * }
+}

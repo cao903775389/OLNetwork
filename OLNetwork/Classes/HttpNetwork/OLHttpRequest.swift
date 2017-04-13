@@ -8,7 +8,7 @@
 
 import UIKit
 import Foundation
-
+import AFNetworking
 //网络请求方式
 enum OLHttpMethod: UInt {
     case GET = 0
@@ -47,7 +47,7 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
      * !@brief 请求体相关
      */
     //NSURLSessionTask 实际请求的发起类 (iOS7之后NSURLConnection的替代)
-    var requestTask: NSURLSessionTask?
+    var requestTask: URLSessionTask?
     
     //请求url
     var requestUrl: String!
@@ -71,7 +71,7 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     var requestCode: OLCode!
     
     //请求超时时间
-    var requestTimeoutInterval: NSTimeInterval!
+    var requestTimeoutInterval: TimeInterval!
     
     //请求发起序列化方式
     var requestSerializerType: OLHttpRequestSerializerType!
@@ -89,9 +89,9 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
      * !@brief 返回体相关
      */
     //请求返回体
-    var response: NSHTTPURLResponse? {
+    var response: HTTPURLResponse? {
         get {
-            return self.requestTask?.response as? NSHTTPURLResponse
+            return self.requestTask?.response as? HTTPURLResponse
         }
     }
     
@@ -137,7 +137,7 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
                             requestMethod: OLHttpMethod = OLHttpMethod.UPLOAD,
                             requestUrl: String,
                             requestArgument: [String: AnyObject]?,
-                            constructingBlock: (AFMultipartFormData) -> Void,
+                            constructingBlock: @escaping (AFMultipartFormData) -> Void,
                             OL_CODE: OLCode) {
         
         self.init(delegate: delegate, requestMethod: requestMethod, requestUrl: requestUrl, requestArgument: requestArgument, requestHeaders: nil, OL_CODE: OL_CODE, requestSerializerType: OLHttpRequestSerializerType.HTTP, responseSerializerType: OLHttpResponseSerializerType.JSON, requestTimeoutInterval: 30, requestAuthorizationHeaderFieldArray: nil, constructingBlock: constructingBlock, resumableDownloadPath: nil)
@@ -156,12 +156,12 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     
     //MARK: Public
     func start() {
-        OLHttpRequestManager.sharedOLHttpRequestManager.sendHttpRequest(self)
+        OLHttpRequestManager.sharedOLHttpRequestManager.sendHttpRequest(request: self)
     }
     
     func cancleDelegateAndRequest() {
         self.delegate = nil
-        OLHttpRequestManager.sharedOLHttpRequestManager.cancleHttpRequest(self)
+        OLHttpRequestManager.sharedOLHttpRequestManager.cancleHttpRequest(request: self)
     }
     
     //MARK: - OLHttpRequestAccessory
@@ -195,7 +195,7 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
                              OL_CODE: OLCode,
                              requestSerializerType: OLHttpRequestSerializerType = OLHttpRequestSerializerType.HTTP,
                              responseSerializerType: OLHttpResponseSerializerType = OLHttpResponseSerializerType.JSON,
-                             requestTimeoutInterval: NSTimeInterval = 30,
+                             requestTimeoutInterval: TimeInterval = 30,
                              requestAuthorizationHeaderFieldArray: [String]?,
                              constructingBlock: ((AFMultipartFormData) -> Void)?,
                              resumableDownloadPath: String?) {
@@ -205,7 +205,7 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
         
         self.requestUrl = requestUrl
         self.requestCode = OL_CODE
-        self.requestArgument = self.ol_requestCustomArgument(requestArgument)
+        self.requestArgument = self.ol_requestCustomArgument(requestArgument: requestArgument)
         self.requestAuthorizationHeaderFieldArray = requestAuthorizationHeaderFieldArray
         self.constructingBlock = constructingBlock
         self.resumableDownloadPath = resumableDownloadPath
@@ -214,7 +214,7 @@ class OLHttpRequest: NSObject, OLHttpRequestAccessory {
         self.responseSerializerType = responseSerializerType
         self.requestTimeoutInterval = requestTimeoutInterval
         self.requestMethod = requestMethod
-        self.requestHeaders = self.ol_requestCustomHTTPHeaderfileds(requestHeaders)
+        self.requestHeaders = self.ol_requestCustomHTTPHeaderfileds(headerfileds: requestHeaders)
     }
     
     private func setUp() {

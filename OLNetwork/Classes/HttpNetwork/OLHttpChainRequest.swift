@@ -11,11 +11,11 @@ import UIKit
 @objc protocol OLHttpChainRequestDelegate {
     
     //请求发送成功
-    optional
+    @objc optional
     func ol_chainRequestFinished(request: OLHttpChainRequest)
     
     //请求发送失败
-    optional
+    @objc optional
     func ol_chainRequestFailed(request: OLHttpChainRequest, failedRequest: OLHttpRequest)
 }
 
@@ -70,7 +70,7 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
         }
         if requestArray.count > 0 {
             self.startNextRequest()
-            OLHttpChainRequestManager.sharedOLHttpChainRequestManager.addChainRequest(self)
+            OLHttpChainRequestManager.sharedOLHttpChainRequestManager.addChainRequest(request: self)
         }else {
             log.info("Error: 请求数组为空!!")
         }
@@ -78,7 +78,7 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
     
     func stop() {
         self.clearRequest()
-        OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(self)
+        OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(request: self)
     }
     
     //需要依赖传值时调用此方法发送请求
@@ -97,7 +97,7 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
             let request = requestArray[nextRequestIndex]
             nextRequestIndex = nextRequestIndex + 1
             request.delegate = self
-            OLHttpRequestManager.sharedOLHttpRequestManager.sendHttpRequest(request)
+            OLHttpRequestManager.sharedOLHttpRequestManager.sendHttpRequest(request: request)
             return true
         }else {
             return false
@@ -121,13 +121,13 @@ class OLHttpChainRequest: NSObject, OLHttpRequestDelegate {
         callBack(self, request)
         //请求已完成
         if !self.startNextRequest() {
-            self.delegate?.ol_chainRequestFinished?(self)
-            OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(self)
+            self.delegate?.ol_chainRequestFinished?(request: self)
+            OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(request: self)
         }
     }
     
     func ol_requestFailed(request: OLHttpRequest) {
-        self.delegate?.ol_chainRequestFailed?(self, failedRequest: request)
-        OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(self)
+        self.delegate?.ol_chainRequestFailed?(request: self, failedRequest: request)
+        OLHttpChainRequestManager.sharedOLHttpChainRequestManager.removeChainRequest(request: self)
     }
 }

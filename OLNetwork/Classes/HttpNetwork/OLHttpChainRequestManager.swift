@@ -33,9 +33,9 @@ class OLHttpChainRequestManager: NSObject {
     }
     
     func removeChainRequest(request: OLHttpChainRequest) {
-        let index = requestArray.indexOf(request)
-        if index != nil && index < requestArray.count {
-            requestArray.removeAtIndex(index!)
+        let index = requestArray.index(of: request)
+        if index != nil && index! < requestArray.count {
+            requestArray.remove(at: index!)
         }
     }
 }

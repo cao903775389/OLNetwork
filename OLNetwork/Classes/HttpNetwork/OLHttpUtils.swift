@@ -22,14 +22,14 @@ class OLHttpUtils: NSObject {
     //MARK: Download
     //获取沙盒Temp目录下未完成的下载任务的文件夹路径
     class func incompleteDownloadTemCacheFolder() -> String? {
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        let fileManager: FileManager = FileManager.default
         var cacheFolder: String?
         if cacheFolder == nil {
             let cacheDir = NSTemporaryDirectory() as NSString
-            cacheFolder = cacheDir.stringByAppendingPathComponent(OLHttpNetworkIncompleteDownloadFolderName)
+            cacheFolder = cacheDir.appendingPathComponent(OLHttpNetworkIncompleteDownloadFolderName)
         }
         do {
-           try fileManager.createDirectoryAtPath(cacheFolder!, withIntermediateDirectories: true, attributes: nil)
+           try fileManager.createDirectory(atPath: cacheFolder!, withIntermediateDirectories: true, attributes: nil)
         } catch {
             print("创建文件目录:\(cacheFolder!)失败！")
             cacheFolder = nil
@@ -42,7 +42,7 @@ class OLHttpUtils: NSObject {
     
         var tempPath: String?
         let incompleteCacheFolder = OLHttpUtils.incompleteDownloadTemCacheFolder()
-        tempPath = (incompleteCacheFolder as NSString?)?.stringByAppendingPathComponent(downloadPath)
+        tempPath = (incompleteCacheFolder as NSString?)?.appendingPathComponent(downloadPath)
         guard tempPath != nil else {
             return nil
         }
@@ -58,7 +58,7 @@ class OLHttpUtils: NSObject {
         //解析本地缓存数据
         var resumeDictionary: NSDictionary?
         do {
-           resumeDictionary = try NSPropertyListSerialization.propertyListWithData(data!, options: NSPropertyListReadOptions.init(rawValue: 0), format: nil) as? NSDictionary
+           resumeDictionary = try PropertyListSerialization.propertyList(from: data! as Data, options: PropertyListSerialization.ReadOptions.init(rawValue: 0), format: nil) as? NSDictionary
         } catch {
             print("缓存数据已失效")
             return false
@@ -76,11 +76,11 @@ class OLHttpUtils: NSObject {
             return true
         }else {
             
-            let localFilePath = resumeDictionary?.objectForKey("NSURLSessionResumeInfoLocalPath") as? String
+            let localFilePath = resumeDictionary?.object(forKey: "NSURLSessionResumeInfoLocalPath") as? String
             if localFilePath == nil || localFilePath!.characters.count < 1  {
                 return false
             }
-            return NSFileManager.defaultManager().fileExistsAtPath(localFilePath!)
+            return FileManager.default.fileExists(atPath: localFilePath!)
         }
     }
 }
