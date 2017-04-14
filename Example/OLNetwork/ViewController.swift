@@ -23,7 +23,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = 150
         self.tableView.register(UINib(nibName: "TestTableViewCell", bundle: nil), forCellReuseIdentifier: identifier)
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -46,8 +45,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell = TestTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: identifier)
         }
         let model = self.data[indexPath.row]
-        (cell as! TestTableViewCell).imageView?.sd_setImage(with: URL(string: model.iu!)!)
+        (cell as! TestTableViewCell).imageView?.sd_setImage(with: URL(string: model.iu!)!, placeholderImage: UIImage(named: "demo3.png"))
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
     }
     
     //HttpRequestDelegate

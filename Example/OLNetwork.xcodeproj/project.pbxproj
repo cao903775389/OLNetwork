@@ -16,6 +16,7 @@
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		7A170F821E9F8210007ED306 /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A170F801E9F8210007ED306 /* TestTableViewCell.swift */; };
 		7A170F831E9F8210007ED306 /* TestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A170F811E9F8210007ED306 /* TestTableViewCell.xib */; };
+		7A170F851EA05FAE007ED306 /* demo3.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A170F841EA05FAE007ED306 /* demo3.png */; };
 		B954634C21AEFD66F7089527 /* Pods_OLNetwork_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0F042942C057E29BF4294D2 /* Pods_OLNetwork_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		71BA340A78B107DAFE53AD17 /* Pods-OLNetwork_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OLNetwork_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OLNetwork_Tests/Pods-OLNetwork_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		7A170F801E9F8210007ED306 /* TestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
 		7A170F811E9F8210007ED306 /* TestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestTableViewCell.xib; sourceTree = "<group>"; };
+		7A170F841EA05FAE007ED306 /* demo3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = demo3.png; sourceTree = "<group>"; };
 		B0F042942C057E29BF4294D2 /* Pods_OLNetwork_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OLNetwork_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79D0EDF2C3E6C58A70E7039 /* OLNetwork.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = OLNetwork.podspec; path = ../OLNetwork.podspec; sourceTree = "<group>"; };
 		ED133B50B4B714136D51ABFA /* Pods-OLNetwork_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OLNetwork_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-OLNetwork_Example/Pods-OLNetwork_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
+				7A170F841EA05FAE007ED306 /* demo3.png */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
 			name = "Example for OLNetwork";
@@ -254,6 +257,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A170F851EA05FAE007ED306 /* demo3.png in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				7A170F831E9F8210007ED306 /* TestTableViewCell.xib in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
