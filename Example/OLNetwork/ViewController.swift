@@ -10,7 +10,6 @@ import UIKit
 
 import OLNetwork
 import YYModel
-import SDWebImage
 private let identifier = "identifier"
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, OLHttpRequestDelegate {
@@ -26,7 +25,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.tableView.register(UINib(nibName: "TestTableViewCell", bundle: nil), forCellReuseIdentifier: identifier)
         
         // Do any additional setup after loading the view, typically from a nib.
-        let param: [String: AnyObject] = ["rd": OLCode.OL_TrialList.rawValue as AnyObject, "ie": 1 as AnyObject]
+        let param: [String: Any] = ["rd": OLCode.OL_TrialList.rawValue, "ie": 1]
         
         self.request = BeautyMAPIHttpRequest(delegate: self, requestMethod: OLHttpMethod.GET, requestUrl: MAPIURL.V130.rawValue, requestArgument: param, OL_CODE: OLCode.OL_TrialList)
         
@@ -45,7 +44,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell = TestTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: identifier)
         }
         let model = self.data[indexPath.row]
-        (cell as! TestTableViewCell).imageView?.sd_setImage(with: URL(string: model.iu!)!, placeholderImage: UIImage(named: "demo3.png"))
+//        (cell as! TestTableViewCell).imageView?.sd_setImage(with: URL(string: model.iu!)!, placeholderImage: UIImage(named: "demo3.png"))
         return cell!
     }
     
