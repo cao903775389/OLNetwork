@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import YYModel
 //网络连接池
-public class OLHttpRequestManager: NSObject {
+public class OLHttpRequestManager {
 
     /**
      * !@brief 单例方法
@@ -83,8 +83,7 @@ public class OLHttpRequestManager: NSObject {
     }
     
     //MARK: Private
-    private override init() {
-        super.init()
+    private init() {
         self.requestConfig = OLHttpConfiguration.sharedOLHttpConfiguration
         self.manager = AFHTTPSessionManager(baseURL: nil)
         //给定一个默认的解析方式
@@ -177,7 +176,7 @@ public class OLHttpRequestManager: NSObject {
     private func dataTaskWithHTTPMethod(method: String,
                                         requestSerializer: AFHTTPRequestSerializer,
                                         URLString: String,
-                                        parameters: [String: AnyObject]?,
+                                        parameters: [String: Any]?,
                                         error: NSErrorPointer) -> URLSessionDataTask {
         
         return self.dataTaskWithHTTPMethod(method: method, requestSerializer: requestSerializer, URLString: URLString, parameters: parameters, constructingBodyBlock: nil, uploadProgress: nil, error: error)
@@ -187,7 +186,7 @@ public class OLHttpRequestManager: NSObject {
     private func dataTaskWithHTTPMethod(method: String,
                                         requestSerializer: AFHTTPRequestSerializer,
                                         URLString: String,
-                                        parameters: [String: AnyObject]?,
+                                        parameters: [String: Any]?,
                                         constructingBodyBlock: ((AFMultipartFormData) -> Void)?,
                                         uploadProgress: ((Progress) -> Void)?,
                                         error: NSErrorPointer) -> URLSessionDataTask {
@@ -211,7 +210,7 @@ public class OLHttpRequestManager: NSObject {
     private func downloadTaskWithDownloadPath(downloadPath: String,
                                               requestSerializer: AFHTTPRequestSerializer,
                                               URLString: String,
-                                              parameters: [String: AnyObject]?,
+                                              parameters: [String: Any]?,
                                               downloadProgressBlock: ((Progress) -> Void)?,
                                               error: NSErrorPointer) -> URLSessionDownloadTask {
         
@@ -366,12 +365,12 @@ public class OLHttpRequestManager: NSObject {
                 incompleteDownloadData?.write(to: path! as URL, atomically: true)
             }
         }
-        request.delegate?.ol_requestFailed?(request: request)
+        request.delegate?.ol_requestFailed(request: request)
     }
     
     private func requestDidSucceedWithRequest(request: OLHttpRequest) {
         
         print("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(String(describing: request.requestArgument))\n========返回JSON: \n\(String(describing: request.responseObject!.yy_modelToJSONString()))\n========错误码: \(String(describing: request.errorCode))\n========URLResponseStatusCode状态码: \(String(describing: request.statusCode))\n========")
-        request.delegate?.ol_requestFinished?(request: request)
+        request.delegate?.ol_requestFinished(request: request)
     }
 }

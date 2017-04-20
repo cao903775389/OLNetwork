@@ -11,26 +11,25 @@ import Foundation
 //MAPIURL
 public class BeautyMAPIHttpRequest: OLHttpRequest {
     
-    override public func ol_requestCustomArgument(requestArgument: [String : AnyObject]?) -> [String : AnyObject]? {
-        
-        var newParams = [String: AnyObject]()
+    override public func ol_requestCustomArgument(requestArgument: [String : Any]?) -> [String : Any]? {
+        var newParams = [String: Any]()
         if requestArgument != nil {
             newParams = requestArgument!
         }
-        newParams["olts"] = "\(NSDate().timeIntervalSince1970)" as AnyObject
-        newParams["olsign"] = OLHttpUtils.ol_buildSign(params: newParams.map({$1})) as AnyObject
+        newParams["olts"] = "\(NSDate().timeIntervalSince1970)"
+        newParams["olsign"] = OLHttpUtils.ol_buildSign(params: newParams.map({$1 as AnyObject}))
         return newParams
     }
     
-    override public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : AnyObject]?) -> [String : AnyObject]? {
+    override public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : Any]?) -> [String : Any]? {
         
-        var header = [String: AnyObject]()
+        var header = [String: Any]()
         if headerfileds != nil {
             header = headerfileds!
         }
-        header["OLENV"] = OLHttpUtils.ol_buildOLEnv() as AnyObject
+        header["OLENV"] = OLHttpUtils.ol_buildOLEnv()
         if OLHttpConfiguration.sharedOLHttpConfiguration.requestMode == OLHttpRequestMode.Debug {
-            header["TESTENV"] = "1" as AnyObject
+            header["TESTENV"] = "1"
         }
         return header
     }
@@ -46,7 +45,7 @@ public class BeautyMAPIHttpRequest: OLHttpRequest {
          errormsg: String(错误信息)
          }
          */
-        if let responseJSON = self.responseObject as? NSDictionary{
+        if let responseJSON = self.responseObject {
             let errorCode = responseJSON["errcode"]
             if let error = errorCode as? NSNumber {
                 self.errorCode = error.intValue

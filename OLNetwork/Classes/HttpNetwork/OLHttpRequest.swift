@@ -53,13 +53,13 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     public var requestUrl: String!
     
     //请求参数
-    public var requestArgument: [String: AnyObject]?
+    public var requestArgument: [String: Any]?
     
     //请求头信息
-    public var requestHeaders: [String: AnyObject]?
+    public var requestHeaders: [String: Any]?
     
     //请求附加信息 不传默认为空
-    public var requestUserInfo: [String: AnyObject]?
+    public var requestUserInfo: [String: Any]?
     
     //流文件上传请求回调(图片 视频 表单 等流文件上传时使用)
     public var constructingBlock: ((AFMultipartFormData) -> Void)?
@@ -126,7 +126,7 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     public convenience init(delegate: OLHttpRequestDelegate?,
                             requestMethod: OLHttpMethod = OLHttpMethod.POST,
                             requestUrl: String,
-                            requestArgument: [String: AnyObject]?,
+                            requestArgument: [String: Any]?,
                             OL_CODE: OLCode) {
         
         self.init(delegate: delegate, requestMethod: requestMethod, requestUrl: requestUrl, requestArgument: requestArgument, requestHeaders: nil, OL_CODE: OL_CODE, requestSerializerType: OLHttpRequestSerializerType.HTTP, responseSerializerType: OLHttpResponseSerializerType.JSON, requestTimeoutInterval: 30, requestAuthorizationHeaderFieldArray: nil, constructingBlock: nil, resumableDownloadPath: nil)
@@ -136,7 +136,7 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     public convenience init(delegate: OLHttpRequestDelegate?,
                             requestMethod: OLHttpMethod = OLHttpMethod.UPLOAD,
                             requestUrl: String,
-                            requestArgument: [String: AnyObject]?,
+                            requestArgument: [String: Any]?,
                             constructingBlock: @escaping (AFMultipartFormData) -> Void,
                             OL_CODE: OLCode) {
         
@@ -147,7 +147,7 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     public convenience init(delegate: OLHttpRequestDelegate?,
                             requestMethod: OLHttpMethod = OLHttpMethod.DOWNLOAD,
                             requestUrl: String,
-                            requestArgument: [String: AnyObject]?,
+                            requestArgument: [String: Any]?,
                             resumableDownloadPath: String,
                             OL_CODE: OLCode) {
         
@@ -165,12 +165,13 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     }
     
     //MARK: - OLHttpRequestAccessory
-    public func ol_requestCustomArgument(requestArgument: [String : AnyObject]?) -> [String: AnyObject]? {
+    
+    public func ol_requestCustomArgument(requestArgument: [String : Any]?) -> [String: Any]? {
         //子类overload此方法实现参数自定义
         return nil
     }
     
-    public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : AnyObject]?) -> [String : AnyObject]? {
+    public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : Any]?) -> [String : Any]? {
         //子类overload此方法实现header头信息自定义
         return nil
     }
@@ -190,8 +191,8 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     public convenience init(delegate: OLHttpRequestDelegate?,
                              requestMethod: OLHttpMethod = OLHttpMethod.POST,
                              requestUrl: String,
-                             requestArgument: [String: AnyObject]?,
-                             requestHeaders: [String: AnyObject]?,
+                             requestArgument: [String: Any]?,
+                             requestHeaders: [String: Any]?,
                              OL_CODE: OLCode,
                              requestSerializerType: OLHttpRequestSerializerType = OLHttpRequestSerializerType.HTTP,
                              responseSerializerType: OLHttpResponseSerializerType = OLHttpResponseSerializerType.JSON,

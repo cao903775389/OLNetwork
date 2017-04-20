@@ -11,22 +11,22 @@ import UIKit
 //MServerURL
 public class BeautyMServerHttpRequest: OLHttpRequest {
 
-    override public func ol_requestCustomArgument(requestArgument: [String : AnyObject]?) -> [String : AnyObject]? {
+    override public func ol_requestCustomArgument(requestArgument: [String : Any]?) -> [String : Any]? {
         
-        var newParams = [String: AnyObject]()
+        var newParams = [String: Any]()
         if requestArgument != nil {
-            newParams["_Request"] = requestArgument! as AnyObject
+            newParams["_Request"] = requestArgument!
         }
         
         var header = ["_Sign": OLHttpUtils.ol_deviceIDFA(), "_ExtMsg": ""]
         
         header["olts"] = "\(NSDate().timeIntervalSince1970)"
-        header["olsign"] = OLHttpUtils.ol_buildSign(params: newParams.map({$1}))
+        header["olsign"] = OLHttpUtils.ol_buildSign(params: newParams.map({$1 as AnyObject}))
         
         header["OLENV"] = OLHttpUtils.ol_buildOLEnv()
         header["USERENV"] = OLHttpUtils.ol_buildUserEnv()
         
-        newParams["_Header"] = header as AnyObject
+        newParams["_Header"] = header
         
         //加密参数
         let data = try? JSONSerialization.data(withJSONObject: newParams, options: JSONSerialization.WritingOptions.init(rawValue: 0))
@@ -43,15 +43,15 @@ public class BeautyMServerHttpRequest: OLHttpRequest {
         }
     }
     
-    override public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : AnyObject]?) -> [String : AnyObject]? {
+    override public func ol_requestCustomHTTPHeaderfileds(headerfileds: [String : Any]?) -> [String : Any]? {
         
-        var header = [String: AnyObject]()
+        var header = [String: Any]()
         if headerfileds != nil {
             header = headerfileds!
         }
-        header["OLENV"] = OLHttpUtils.ol_buildOLEnv() as AnyObject
+        header["OLENV"] = OLHttpUtils.ol_buildOLEnv()
         if OLHttpConfiguration.sharedOLHttpConfiguration.requestMode == OLHttpRequestMode.Debug {
-            header["TESTENV"] = "2" as AnyObject
+            header["TESTENV"] = "2"
         }
         return header
     }
@@ -81,8 +81,8 @@ public class BeautyMServerHttpRequest: OLHttpRequest {
             }
          }
          */
-        if let responseJSON = self.responseObject as? NSDictionary{
-            if let status = responseJSON["_Status"] as? NSDictionary {
+        if let responseJSON = self.responseObject {
+            if let status = responseJSON["_Status"] as? [String: AnyObject] {
                 let errorCode = status["_Code"]
                 if let error = errorCode as? NSNumber {
                     self.errorCode = error.intValue

@@ -9,29 +9,42 @@
 import Foundation
 
 //请求回调代理
-@objc public protocol OLHttpRequestDelegate {
+public protocol OLHttpRequestDelegate: class {
     
     //请求完成
-    @objc optional
-    func ol_requestFinished(request: OLHttpRequest) -> Void
+    func ol_requestFinished(request: OLHttpRequest)
     
     //请求失败
-    @objc optional
-    func ol_requestFailed(request: OLHttpRequest) -> Void
+    func ol_requestFailed(request: OLHttpRequest)
+}
+extension OLHttpRequestDelegate {
+    func ol_requestFinished(request: OLHttpRequest) {}
+    
+    //请求失败
+    func ol_requestFailed(request: OLHttpRequest) {}
 }
 
 //请求附件配置
-@objc protocol OLHttpRequestAccessory {
+protocol OLHttpRequestAccessory: class {
     
     //自定义参数
-    @objc optional
-    func ol_requestCustomArgument(requestArgument: [String: AnyObject]?) -> [String: AnyObject]?
+    func ol_requestCustomArgument(requestArgument: [String: Any]?) -> [String: Any]?
     
     //自定义header参数
-    @objc optional
-    func ol_requestCustomHTTPHeaderfileds(headerfileds: [String: AnyObject]?) -> [String: AnyObject]?
+    func ol_requestCustomHTTPHeaderfileds(headerfileds: [String: Any]?) -> [String: Any]?
     
     //自定义Response数据校验
-    @objc optional
     func ol_requestCustomJSONValidator() -> Bool
+}
+extension OLHttpRequestAccessory {
+    
+    func ol_requestCustomArgument(requestArgument: [String: Any]?) -> [String: Any]? {
+        return nil
+    }
+    func ol_requestCustomHTTPHeaderfileds(headerfileds: [String: Any]?) -> [String: Any]? {
+        return nil
+    }
+    func ol_requestCustomJSONValidator() -> Bool {
+        return false
+    }
 }

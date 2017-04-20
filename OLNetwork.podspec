@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'OLNetwork'
-  s.version          = '1.0.1'
+  s.version          = '1.2'
   s.summary          = 'OL网络层封装.'
 
 # This description is used to generate tags and improve search results.
@@ -41,5 +41,4 @@ s.platform = :ios, '8.0'
     s.dependency 'AFNetworking', '~> 3.1.0'
     s.dependency 'NSString+TBEncryption', '~> 1.0'
     s.dependency 'YYModel', '~> 1.0.4'
-    s.dependency 'SDWebImage', '~> 4.0.0'
 end
