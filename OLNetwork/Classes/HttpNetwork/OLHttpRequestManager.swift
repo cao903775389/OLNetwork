@@ -8,7 +8,7 @@
 
 import UIKit
 import AFNetworking
-import YYModel
+import YYKit
 //网络连接池
 public class OLHttpRequestManager {
 
@@ -370,7 +370,7 @@ public class OLHttpRequestManager {
     
     private func requestDidSucceedWithRequest(request: OLHttpRequest) {
         
-        print("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(String(describing: request.requestArgument))\n========返回JSON: \n\(String(describing: request.responseObject!.yy_modelToJSONString()))\n========错误码: \(String(describing: request.errorCode))\n========URLResponseStatusCode状态码: \(String(describing: request.statusCode))\n========")
+        print("\n========\n========请求成功: url = \(request.requestUrl!)\n========请求模式: \(OLHttpConfiguration.sharedOLHttpConfiguration.requestMode!)\n========接口号: \(request.requestCode!.rawValue)\n========请求参数: \(String(describing: request.requestArgument))\n========返回JSON: \n\(String(describing: request.responseObject!.modelToJSONString()))\n========错误码: \(String(describing: request.errorCode))\n========URLResponseStatusCode状态码: \(String(describing: request.statusCode))\n========")
         request.delegate?.ol_requestFinished(request: request)
     }
 }

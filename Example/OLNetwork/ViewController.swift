@@ -9,7 +9,7 @@
 import UIKit
 
 import OLNetwork
-import YYModel
+import YYKit
 private let identifier = "identifier"
 
 
@@ -63,7 +63,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             if let trialJSON = trialData {
                 for trial in trialJSON {
-                    let trialModel = TrialListItemModel.yy_model(with: trial)
+                    let trialModel = TrialListItemModel.model(with: trial)
                     self.data.append(trialModel!)
                 }
             }
