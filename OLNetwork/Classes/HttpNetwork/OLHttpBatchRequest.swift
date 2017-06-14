@@ -26,7 +26,7 @@ import UIKit
 public class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
     
     //所有请求
-    private var requestArray: [OLHttpRequest]!
+    public var requestArray: [OLHttpRequest]!
     
     //delegate
     public weak var delegate: OLHttpBatchRequestDelegate?
@@ -35,7 +35,7 @@ public class OLHttpBatchRequest: NSObject, OLHttpRequestDelegate {
     private var tag: Int?
     
     //失败的请求
-    private var failedRequest: OLHttpRequest?
+    public var failedRequest: OLHttpRequest?
     
     //完成数
     private var finishedCount: Int!

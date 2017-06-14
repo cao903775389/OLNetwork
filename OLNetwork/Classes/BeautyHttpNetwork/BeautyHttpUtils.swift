@@ -63,7 +63,7 @@ extension OLHttpUtils {
         
         parameters["idfa"] = OLHttpUtils.ol_deviceIDFA() as AnyObject//设备唯一标识 idfa
         if let uid = OLHttpConfiguration.sharedOLHttpConfiguration.userId {
-            parameters["uid"] = "\(uid)" as AnyObject
+            parameters["uid"] = String(uid) as AnyObject
         }else{
             parameters["uid"] = "0" as AnyObject//用户id
         }

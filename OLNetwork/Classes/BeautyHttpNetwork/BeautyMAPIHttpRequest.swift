@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 //MAPIURL
 public class BeautyMAPIHttpRequest: OLHttpRequest {
@@ -45,21 +46,13 @@ public class BeautyMAPIHttpRequest: OLHttpRequest {
          errormsg: String(错误信息)
          }
          */
+        
         if let responseJSON = self.responseObject {
-            let errorCode = responseJSON["errcode"]
-            if let error = errorCode as? NSNumber {
-                self.errorCode = error.intValue
-                
-            }else if let error = errorCode as? String {
-                self.errorCode = Int(error)
-            }
-            
-            if self.errorCode != nil && self.errorCode == 0 {
+            self.errorCode = JSON(responseJSON)["errcode"].intValue
+            if self.errorCode == 0 {
                 return true
-            }else if self.errorCode == nil {
-                self.errorCode = OLHttpRequestValidationError.InvalidErrorCode.rawValue
             }
-            self.errorMsg = responseJSON["errmsg"] as? String
+            self.errorMsg = JSON(responseJSON)["errmsg"].stringValue
             return false
         }
         

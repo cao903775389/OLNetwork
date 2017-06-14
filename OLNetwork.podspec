@@ -41,4 +41,5 @@ Pod::Spec.new do |s|
     s.dependency 'AFNetworking', '~> 3.1.0'
     s.dependency 'NSString+TBEncryption', '~> 1.0'
     s.dependency 'YYKit', '~> 1.0.9'
+    s.dependency 'SwiftyJSON', '~> 3.1.4'
 end

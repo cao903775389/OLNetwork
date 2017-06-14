@@ -23,7 +23,7 @@ public class OLHttpConfiguration: NSObject {
     public static let sharedOLHttpConfiguration: OLHttpConfiguration = OLHttpConfiguration()
     
     //用户id
-    public var userId: String?
+    public var userId: Int?
     
     //是否url开启打印开关
     public var debugLogEnabled: Bool!

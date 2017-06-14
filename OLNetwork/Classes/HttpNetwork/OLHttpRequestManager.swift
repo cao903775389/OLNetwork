@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 import YYKit
+
 //网络连接池
 public class OLHttpRequestManager {
 

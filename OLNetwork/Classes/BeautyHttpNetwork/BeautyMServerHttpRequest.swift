@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwiftyJSON
 //MServerURL
 public class BeautyMServerHttpRequest: OLHttpRequest {
 
@@ -82,21 +82,12 @@ public class BeautyMServerHttpRequest: OLHttpRequest {
          }
          */
         if let responseJSON = self.responseObject {
-            if let status = responseJSON["_Status"] as? [String: AnyObject] {
-                let errorCode = status["_Code"]
-                if let error = errorCode as? NSNumber {
-                    self.errorCode = error.intValue
-                    
-                }else if let error = errorCode as? String {
-                    self.errorCode = Int(error)
-                }
-                
-                if self.errorCode != nil && self.errorCode == 2000 {
-                    return true
-                }else if self.errorCode == nil {
-                    self.errorCode = OLHttpRequestValidationError.InvalidErrorCode.rawValue
-                }
-                self.errorMsg = status["_Msg"] as? String
+            let errorCode = JSON(responseJSON)["_Status"]["_Code"].intValue
+            self.errorCode = errorCode
+            if errorCode == 2000 {
+                return true
+            }else {
+                self.errorMsg = JSON(responseJSON)["_Status"]["_Msg"].stringValue
                 return false
             }
         }
