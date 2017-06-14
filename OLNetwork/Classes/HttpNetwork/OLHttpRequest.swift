@@ -66,7 +66,7 @@ public class OLHttpRequest: NSObject, OLHttpRequestAccessory {
     
     //流文件下载请求目标路径(仅在使用断点续传下载请求时使用)
     public var resumableDownloadPath: String?
-    
+        
     //请求的接口号
     public var requestCode: OLCode!
     

@@ -29,16 +29,16 @@ Pod::Spec.new do |s|
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
-s.platform = :ios, '8.0'
-  s.source_files = 'OLNetwork/Classes/**/*'
+  s.platform = :ios, '8.0'
+  s.source_files = 'OLNetwork/Classes/BeautyHttpNetwork/*', 'OLNetwork/Classes/HttpNetwork/*'
   
   # s.resource_bundles = {
   #   'OLNetwork' => ['OLNetwork/Assets/*.png']
   # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
+  # s.public_header_files = 'Pod/Classes/BeautyHttpNetwork/**/*.h'
     s.frameworks = 'AdSupport'
     s.dependency 'AFNetworking', '~> 3.1.0'
     s.dependency 'NSString+TBEncryption', '~> 1.0'
-    s.dependency 'YYModel', '~> 1.0.4'
+    s.dependency 'YYKit', '~> 1.0.9'
 end

@@ -87,7 +87,7 @@ public enum OLCode: Int {
     case OL_LiveWatchVideoColumns = 2005//看视频栏目对应的直播回放列表数据
     case OL_LiveColumnListInfo = 2007//追直播或看视频直播栏目分类信息
     case OL_LiveSuspend = 2210 // 暂停直播
-
+    
     /**
      * !@brief 文章
      */
@@ -103,7 +103,7 @@ public enum OLCode: Int {
     case OL_SearchProductList = 1706//产品 关键字搜索
     case OL_SearchArticleList = 1707//文章 关键字搜索
     case OL_SearchLiveList = 2117//直播 关键字搜索
-
+    
     
     /**
      * !@brief 活动页
@@ -125,6 +125,8 @@ public enum OLCode: Int {
     case OL_TrialSubmitReport = 1801//提交试用报告
     case OL_TrialDetail = 1303//试用详情
     case OL_TrialReportList = 1309//试用报告列表
+    case OL_TrialUserAllTrialList = 2221//用户申请过的试用列表
+    case OL_TrialUserSucceedTrialList = 2222//用户申请成功试用列表
     
     /**
      * !@brief 专家达人
@@ -162,6 +164,7 @@ public enum OLCode: Int {
     case OL_UserModifyInfomation = 1905//用户修改个人信息(昵称, 性别)
     case OL_UserModifyAddress = 1906//用户修改收货地址
     case OL_UserAddress = 1304//获取用户收货地址
+    case OL_UserGetShareInfo = 2220 // 获取分享信息 邀请好友
     
     /**
      * !@brief 用户消息中心
@@ -200,7 +203,8 @@ public enum OLCode: Int {
     /**
      * !@breif 用户反馈
      */
-    case OL_FeekBack = 1025//提交反馈
+    case OL_FeekBack = 2223//提交反馈
+    case OL_FeekBackList = 2224 //反馈列表
     
     /**
      * !@brief 用户登录

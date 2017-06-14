@@ -23,8 +23,10 @@ PODS:
   - OLNetwork (1.2):
     - AFNetworking (~> 3.1.0)
     - NSString+TBEncryption (~> 1.0)
-    - YYModel (~> 1.0.4)
-  - YYModel (1.0.4)
+    - YYKit (~> 1.0.9)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
   - FBSnapshotTestCase
@@ -38,9 +40,9 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   NSString+TBEncryption: a1cae62b97b856e2dbb63d69a8a450031ecd268f
-  OLNetwork: 5c5fafa0280cdbab0f515e7fb02b84c113c03351
-  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+  OLNetwork: 0d663a967bec32f3af41ab56fd1afcb35d499507
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 533542494155f698b907611141c4424a6d489380
+PODFILE CHECKSUM: cdf76bb42782043bbd4d21e5a9846fd1ca2d6114
 
 COCOAPODS: 1.2.1

@@ -20,7 +20,7 @@ public class OLHttpConfiguration: NSObject {
      * !@brief 单例方法
      *  @note HttpRequest基础配置类
      */
-    internal static let sharedOLHttpConfiguration: OLHttpConfiguration = OLHttpConfiguration()
+    public static let sharedOLHttpConfiguration: OLHttpConfiguration = OLHttpConfiguration()
     
     //用户id
     public var userId: String?

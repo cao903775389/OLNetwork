@@ -1,4 +1,5 @@
 use_frameworks!
+inhibit_all_warnings!
 
 target 'OLNetwork_Example' do
   pod 'OLNetwork', :path => '../'
