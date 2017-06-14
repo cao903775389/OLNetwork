@@ -1,6 +1,6 @@
 {
   "name": "OLNetwork",
-  "version": "1.2",
+  "version": "1.2.1",
   "summary": "OL网络层封装.",
   "description": "OL网络请求基础库封装.",
   "homepage": "https://github.com/cao903775389/OLNetwork",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/cao903775389/OLNetwork.git",
-    "tag": "1.2"
+    "tag": "1.2.1"
   },
   "platforms": {
     "ios": "8.0"

@@ -20,7 +20,7 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - NSString+TBEncryption (1.0)
-  - OLNetwork (1.2):
+  - OLNetwork (1.2.1):
     - AFNetworking (~> 3.1.0)
     - NSString+TBEncryption (~> 1.0)
     - YYKit (~> 1.0.9)
@@ -40,7 +40,7 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   NSString+TBEncryption: a1cae62b97b856e2dbb63d69a8a450031ecd268f
-  OLNetwork: 0d663a967bec32f3af41ab56fd1afcb35d499507
+  OLNetwork: 14469be4a0239107041a40643c5f002c1a6fde12
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
 PODFILE CHECKSUM: cdf76bb42782043bbd4d21e5a9846fd1ca2d6114
